@@ -89,3 +89,14 @@ saveRDS(x, "butcher-recipes/heavy_recipe.rds")
 library(butcher)
 y <- butcher(x, verbose = TRUE)
 saveRDS(y, "butcher-recipes/butchered_recipe.rds")
+
+joyce <-  recipe(Sale_Price ~ ., data = ames) %>%
+  step_knnimpute(all_predictors(), skip = TRUE) %>%
+  step_BoxCox(all_numeric(), all_numeric(), skip = TRUE) %>%
+  step_inverse(all_numeric(), skip = TRUE) %>%
+  step_center(all_numeric(), skip = TRUE) %>%
+  step_scale(all_numeric(), skip = TRUE) %>%
+  step_spatialsign(all_numeric(), skip = TRUE) %>%
+  step_nzv(all_numeric(), skip = TRUE) %>%
+  prep() %>% 
+  bake(ames)
